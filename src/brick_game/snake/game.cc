@@ -1,20 +1,18 @@
 #include "game.h"
-#include <cstdlib>  // Для rand()
-#include <ctime>    // Для time()
 
 
-GameField::GameField(int width, int height) 
-    : width_(width), height_(height), score_(0), high_score_(0), level_(1), speed_(200), is_paused_(false), is_game_over_(false) {
-    
-    // Инициализация поля
-    field_data_.resize(height_, std::vector<int>(width_, 0));
+Game::Game() : status_(Status::Initial){
+    game_info_t_.field = new int*[FIELD_H];
 
-    // Начальное положение змейки (центр)
-    snake_ = Snake(width_ / 2, height_ / 2);
+    for(int i = 0;i<FIELD_H;++i){
+        game_info_t_.field[i] = new int[FIELD_W];
+    }
+    for (int i = 0; i < FIELD_H; ++i) {
+        for (int j = 0; j < FIELD_W; ++j) {
+            game_info_t_.field[i][j] = 0;
+        }
+    }
 
-}
 
-
-void userInput(UserAction_t action, bool hold){
 
 }
