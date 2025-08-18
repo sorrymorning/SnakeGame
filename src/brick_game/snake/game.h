@@ -22,9 +22,9 @@ class Game{
         Status status_;
         GameInfo_t game_info_t_;
         UserAction_t action_;
-        
-        Snake snake_;
 
+        Snake snake_;
+        
 
 
     public:
