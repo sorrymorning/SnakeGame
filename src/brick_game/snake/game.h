@@ -24,12 +24,12 @@ class Game{
         UserAction_t action_;
 
         Snake snake_;
-        
 
 
     public:
 
         Game();
+        void userInput(UserAction_t action, bool hold);
 
 };
 

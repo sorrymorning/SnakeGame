@@ -21,3 +21,24 @@ Game::Game() : status_(Status::Initial),action_(UserAction_t::Start),snake_(){
     game_info_t_.speed = 100;
 
 }   
+
+
+void Game:userInput(UserAction_t action, bool hold){
+
+
+    if (state == Status::Initial){
+        startGame();
+    }else if (state == Status::Initial){
+        spawnGame();
+    }else if (state == Status::Moving){
+        //movesnake();
+    }else if (state == Status::Eating){
+        // eat();
+    }else if (state == Status::Pause){
+        
+    }else if (state == Status::GameOver){
+
+    }else if (state == Status::Exit){
+
+    }
+}
