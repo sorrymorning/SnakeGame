@@ -4,28 +4,29 @@
 
 #include <vector>
 #include <utility>
-
+#include "api.h"
 
 
 #define FIELD_H 20
 #define FIELD_W 10
 
 
-enum Direction { UP, DOWN, LEFT, RIGHT };
+enum Direction { UP,  LEFT, DOWN, RIGHT };
 
 
 class Snake {
 public:
-    Snake(int startX, int startY, int initialLength = 4);
+    Snake(int startX = 5, int startY = 5, int initialLength = 4);
     
     void move();
     void grow();
-    bool checkCollision() const;
-    void changeDirection(Direction newDir);
-    
+    bool checkCollision(const std::pair<int, int>& position) const;
+    void changeDirection(UserAction_t turn);
+    std::pair<int, int> getNextHeadPosition() const;
     const std::vector<std::pair<int, int>>& getBody() const;
     Direction getDirection() const;
     bool isAlive() const;
+    
 
 private:
     std::vector<std::pair<int, int>> body;

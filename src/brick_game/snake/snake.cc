@@ -1,7 +1,7 @@
 #include "snake.h"
 
 Snake::Snake(int startX, int startY, int initialLength) {
-    currentDir = RIGHT; // Начальное направление
+    currentDir = LEFT; // Начальное направление
     alive = true;
     
     // Создаём змейку горизонтально: [(5,5), (5,6), (5,7),(5,8)]
@@ -17,14 +17,28 @@ void Snake::move() {
     
     auto head = body.front();
     switch (currentDir) {
-        case UP:    head.second -= 1; break;
-        case DOWN:  head.second += 1; break;
-        case LEFT:  head.first -= 1;  break;
-        case RIGHT: head.first += 1;  break;
+        case UP:    head.first -= 1; break;
+        case DOWN:  head.first += 1; break;
+        case LEFT:  head.second -= 1;  break;
+        case RIGHT: head.second += 1;  break;
     }
     body.insert(body.begin(), head);
     body.pop_back();
 }
+
+std::pair<int, int> Snake::getNextHeadPosition() const {
+    if (!alive) return body.front();
+    
+    auto nextHead = body.front();
+    switch (currentDir) {
+        case UP:    nextHead.first -= 1; break;
+        case DOWN:  nextHead.first += 1; break;
+        case LEFT:  nextHead.second -= 1;  break;
+        case RIGHT: nextHead.second += 1;  break;
+    }
+    return nextHead;
+}
+
 
 
 void Snake::grow() {
@@ -32,28 +46,42 @@ void Snake::grow() {
 }
 
 
-bool Snake::checkCollision() const {
-    auto head = body.front();
+bool Snake::checkCollision(const std::pair<int, int>& position) const {
+    const auto& [x, y] = position;
     
-    if (head.first < 0 || head.first >= FIELD_W || 
-        head.second < 0 || head.second >= FIELD_H) {
+    // Проверка границ поля
+    if (x < 0 || x >= FIELD_W || y < 0 || y >= FIELD_H) {
         return true;
     }
     
-    for (size_t i = 1; i < body.size(); ++i) {
-        if (head == body[i]) return true;
+    // Проверка столкновения с телом (исключая хвост, который будет удален)
+    for (size_t i = 0; i < body.size() - 1; ++i) {
+        if (x == body[i].first && y == body[i].second) {
+            return true;
+        }
     }
     
     return false;
 }
 
 
-void Snake::changeDirection(Direction newDir) {
-    if ((currentDir == LEFT && newDir != RIGHT) ||
-        (currentDir == RIGHT && newDir != LEFT) ||
-        (currentDir == UP && newDir != DOWN) ||
-        (currentDir == DOWN && newDir != UP)) {
-        currentDir = newDir;
+void Snake::changeDirection(UserAction_t turn) {
+    if (!alive) return;
+    
+    // Определяем новое направление на основе поворота
+    switch (currentDir) {
+        case UP:
+            currentDir = (turn == UserAction_t::Left) ? LEFT : RIGHT;
+            break;
+        case DOWN:
+            currentDir = (turn == UserAction_t::Left) ? RIGHT : LEFT;
+            break;
+        case LEFT:
+            currentDir = (turn == UserAction_t::Left) ? DOWN : UP;
+            break;
+        case RIGHT:
+            currentDir = (turn == UserAction_t::Left) ? UP : DOWN;
+            break;
     }
 }
 
@@ -68,3 +96,5 @@ Direction Snake::getDirection() const {
 bool Snake::isAlive() const {
     return alive;
 }
+
+

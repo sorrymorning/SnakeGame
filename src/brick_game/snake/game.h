@@ -1,14 +1,14 @@
 #ifndef GAME_H
 #define GAME_H
 
-
+#include <iostream>
 #include "api.h"
 #include "snake.h"
 
 
 enum class Status {
     Initial,
-    Appearance,
+    // Appearance,
     Moving,
     Eating,
     Pause,
@@ -25,11 +25,17 @@ class Game{
 
         Snake snake_;
 
+        int pause;
+        void clearStateField();
 
     public:
 
         Game();
         void userInput(UserAction_t action, bool hold);
+        void actionSnake(UserAction_t action, bool hold);
+        void moveSnake(UserAction_t action,bool hold);
+        GameInfo_t updateCurrentState();
+        void startGame();
 
 };
 
