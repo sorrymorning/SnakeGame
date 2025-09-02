@@ -4,7 +4,7 @@
 #include <iostream>
 #include "api.h"
 #include "snake.h"
-
+#include "timer.h"
 
 enum class Status {
     Initial,
@@ -24,6 +24,7 @@ class Game{
         UserAction_t action_;
 
         Snake snake_;
+        Timer timer_;
 
         int pause;
         void clearStateField();
@@ -32,7 +33,11 @@ class Game{
 
         Game();
         void userInput(UserAction_t action, bool hold);
+        // void actionSnake(UserAction_t action, bool hold);
         void actionSnake(UserAction_t action, bool hold);
+        void handleSystemActions(UserAction_t action);
+        void handleGameActions(UserAction_t action, bool hold);
+        bool isDirectionAction(UserAction_t action) const;
         void moveSnake(UserAction_t action,bool hold);
         GameInfo_t updateCurrentState();
         void startGame();

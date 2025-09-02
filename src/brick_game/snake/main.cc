@@ -17,7 +17,7 @@ int main(){
     GameInfo_t field = game.updateCurrentState();
     printArray(field.field);
     game.userInput(UserAction_t::Left,false); // здесь старт идет
-    game.userInput(UserAction_t::Right,false);
+    game.userInput(UserAction_t::Action,false);
     game.userInput(UserAction_t::Down,false);
     // game.userInput(UserAction_t::Right,false);
     field = game.updateCurrentState();

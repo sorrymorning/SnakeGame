@@ -21,12 +21,12 @@ public:
     void move();
     void grow();
     bool checkCollision(const std::pair<int, int>& position) const;
-    void changeDirection(UserAction_t turn);
+    void changeDirection(UserAction_t action);
     std::pair<int, int> getNextHeadPosition() const;
     const std::vector<std::pair<int, int>>& getBody() const;
     Direction getDirection() const;
     bool isAlive() const;
-    
+    Direction actionToDirection(UserAction_t action);
 
 private:
     std::vector<std::pair<int, int>> body;

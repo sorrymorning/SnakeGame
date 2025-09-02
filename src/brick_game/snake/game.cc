@@ -1,7 +1,7 @@
 #include "game.h"
 
 
-Game::Game() : status_(Status::Initial),action_(UserAction_t::Start),snake_(5,5){
+Game::Game() : status_(Status::Initial),action_(UserAction_t::Start),snake_(5,5),timer_(){
     game_info_t_.field = new int*[FIELD_H];
 
     for(int i = 0;i<FIELD_H;++i){
@@ -47,24 +47,78 @@ void Game::startGame(){
 }
 
 
-void Game::actionSnake(UserAction_t action, bool hold){
+// void Game::actionSnake(UserAction_t action, bool hold){
     
-    if(!pause){
-        if (action == UserAction_t::Left || action == UserAction_t::Right){
-            snake_.changeDirection(action);
-        }else if(action == UserAction_t::Pause){
-            pause = !pause;
-        }
-        // тут можно добавить ускорение наверное
-    }
-    if(action == UserAction_t::Terminate){
-        // функция по завершении игры :)
-    }
 
-    // тут if для таймера как в тетрисе
-    moveSnake(action,hold);
+//     if(timer_.isExpired()){
+//         moveSnake(action,hold);
+//         timer_.reset();
+//     }else if(!pause){
+//         if (action >= UserAction_t::Left && action <= UserAction_t::Down){
+//             snake_.changeDirection(action);
+//         }else if(action == UserAction_t::Pause){
+//             pause = !pause;
+//         }
+//         // тут можно добавить ускорение наверное
+//     }
 
+//     if(action == UserAction_t::Terminate){
+//         // функция по завершении игры :)
+//     }
+
+    
+
+// }
+
+void Game::actionSnake(UserAction_t action, bool hold) {
+    // 1. Обработка системных команд (всегда)
+    handleSystemActions(action);
+    
+    // 2. Если пауза - только системные команды
+    if (!pause){
+        handleGameActions(action, hold);
+
+    }
+    
 }
+
+void Game::handleSystemActions(UserAction_t action) {
+    switch (action) {
+        case UserAction_t::Terminate:
+            // завершение игры
+            break;
+        case UserAction_t::Pause:
+            pause = !pause;
+            if (pause) timer_.pause();
+            else timer_.resume();
+            break;
+        default:
+            break;
+    }
+}
+
+void Game::handleGameActions(UserAction_t action, bool hold) {
+    // Движение по таймеру
+    if (timer_.isExpired()) {
+        moveSnake(action, hold);
+        timer_.reset();
+    }
+    
+    // Изменение направления (немедленно)
+    if (isDirectionAction(action)) {
+        snake_.changeDirection(action);
+    }
+    
+    // // Дополнительные действия
+    // if (action == UserAction_t::SpeedUp && !hold) {
+    //     increaseSpeed();
+    // }
+}
+
+bool Game::isDirectionAction(UserAction_t action) const {
+    return action >= UserAction_t::Left && action <= UserAction_t::Down;
+}
+
 
 
 
@@ -83,7 +137,6 @@ void Game::moveSnake(UserAction_t action,bool hold){
 }
 
 GameInfo_t Game::updateCurrentState(){
-
     clearStateField();
     for (const auto& segment : snake_.getBody()) {
         game_info_t_.field[segment.first][segment.second] = 1;

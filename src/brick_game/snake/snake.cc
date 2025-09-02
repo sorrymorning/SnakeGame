@@ -65,23 +65,13 @@ bool Snake::checkCollision(const std::pair<int, int>& position) const {
 }
 
 
-void Snake::changeDirection(UserAction_t turn) {
-    if (!alive) return;
-    
-    // Определяем новое направление на основе поворота
-    switch (currentDir) {
-        case UP:
-            currentDir = (turn == UserAction_t::Left) ? LEFT : RIGHT;
-            break;
-        case DOWN:
-            currentDir = (turn == UserAction_t::Left) ? RIGHT : LEFT;
-            break;
-        case LEFT:
-            currentDir = (turn == UserAction_t::Left) ? DOWN : UP;
-            break;
-        case RIGHT:
-            currentDir = (turn == UserAction_t::Left) ? UP : DOWN;
-            break;
+void Snake::changeDirection(UserAction_t action) {
+    Direction newDir = actionToDirection(action);
+    if ((currentDir == LEFT && newDir != RIGHT) ||
+        (currentDir == RIGHT && newDir != LEFT) ||
+        (currentDir == UP && newDir != DOWN) ||
+        (currentDir == DOWN && newDir != UP)) {
+        currentDir = newDir;
     }
 }
 
@@ -97,4 +87,16 @@ bool Snake::isAlive() const {
     return alive;
 }
 
+
+Direction Snake::actionToDirection(UserAction_t action){
+    Direction dir = UP;
+    switch(action){
+        case Up:dir = UP;break;
+        case Left:dir = LEFT;break;
+        case Right:dir = RIGHT;break;
+        case Down:dir = DOWN;break;
+        default: break;
+    }
+    return dir;
+}
 
