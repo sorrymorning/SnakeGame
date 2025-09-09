@@ -1,6 +1,7 @@
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
+#include "game.h"
 
 class Singleton {
 private:
@@ -11,7 +12,7 @@ private:
     Singleton& operator=(const Singleton&) = delete;
 
 public:
-    static SnakeGame& getSnakeGame();
+    static Game& getSnakeGame();
 };
 
 

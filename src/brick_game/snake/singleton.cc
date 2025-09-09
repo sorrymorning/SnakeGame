@@ -1,10 +1,11 @@
-#include "sigleton.h"
+#include "singleton.h"
 
 
 
-static SnakeGame& getSnakeGame(){
+Game& Singleton::getSnakeGame() {
     static Game snake_game;
     return snake_game;
 }
+
 
 

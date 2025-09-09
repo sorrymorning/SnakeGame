@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17 -O2
 
 # Имена исходных файлов
-SRCS = main.cc game.cc snake.cc timer.cc
+SRCS = backend.cc game.cc main.cc singleton.cc snake.cc timer.cc
 OBJS = $(SRCS:.cc=.o)
 TARGET = snake_game
 
