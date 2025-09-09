@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Documentation BrickGame v1.0 aka Tetris}
+\date{}
+\maketitle
+
+\section{Introduction}
+
+Project BrickGame v1.0 aka Tetris is an implementation of the classic arcade game Tetris using the C programming language and the ncurses library for the terminal interface.
+
+\section{Project structure}
+
+\subsection{Tetris library (\texttt{src/brick\_game/tetris})}
+
+\begin{itemize}[label=--]
+    \item Source code files implementing the logic of the Tetris game.
+    \item Core functions for interacting with the game field, controlling pieces, and handling user input.
+    \item Implementation of a finite state machine to formalize the game logic.
+\end{itemize}
+
+\subsection{Terminal interface (\texttt{src/gui/cli})}
+
+\begin{itemize}[label=--]
+    \item Source code files responsible for rendering the game in the terminal using the ncurses library.
+    \item Implementation of game field rendering, user input handling, and displaying the current game state.
+\end{itemize}
+
+\section{Project build}
+
+The project uses the \texttt{make} build system with a Makefile that includes the following targets:
+
+\begin{itemize}
+    \item \texttt{all}: Build the project.
+    \item \texttt{install}: Install the program into the system.
+    \item \texttt{uninstall}: Remove the program from the system.
+    \item \texttt{clean}: Remove temporary files and folders.
+    \item \texttt{dvi}: Create a DVI file.
+    \item \texttt{dist}: Create an archive containing the necessary files for building and running the program.
+\end{itemize}
+
+\section{Runtime requirements}
+
+The project requires the C11 programming language, the gcc compiler, and the ncurses library for the terminal interface.
+
+\section{Testing}
+
+The project includes unit tests using the \texttt{check} library. The test coverage for the library is at least 80\%.
+
+\end{document}
