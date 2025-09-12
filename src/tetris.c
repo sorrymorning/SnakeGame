@@ -1,4 +1,4 @@
-#include "brickgame/tetris/inc/tetris.h"
+#include "brick_game/snake/api.h"
 
 int main() {
   WIN_INIT();

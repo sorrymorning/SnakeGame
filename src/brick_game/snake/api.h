@@ -29,4 +29,25 @@ typedef struct {
   int pause;       
 } GameInfo_t;
 
+typedef enum {
+    Initial,
+    // Appearance,
+    Moving,
+    Eating,
+    Pausing,
+    Ending,
+    Exit
+} Status;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void userInput(UserAction_t action, bool hold);
+
+GameInfo_t updateCurrentState();
+
+#ifdef __cplusplus
+}
+#endif
 #endif

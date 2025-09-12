@@ -1,20 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <iostream>
+
 #include "api.h"
 #include "snake.h"
 #include "timer.h"
 
-enum class Status {
-    Initial,
-    // Appearance,
-    Moving,
-    Eating,
-    Pause,
-    GameOver,
-    Exit
-};
+
 
 class Game{
 

@@ -31,9 +31,9 @@ void Game::userInput(UserAction_t action, bool hold){
         actionSnake(action,hold);
     }else if (status_ == Status::Eating){
         // eat();
-    }else if (status_ == Status::Pause){
+    }else if (status_ == Status::Pausing){
         
-    }else if (status_ == Status::GameOver){
+    }else if (status_ == Status::Ending){
 
     }else if (status_ == Status::Exit){
 
@@ -128,7 +128,7 @@ void Game::moveSnake(UserAction_t action,bool hold){
 
 
     std::pair<int, int> nextHead = snake_.getNextHeadPosition();
-        std::cout << snake_.getDirection();
+        // std::cout << snake_.getDirection();
 
     if(!snake_.checkCollision(nextHead)){
         snake_.move();
