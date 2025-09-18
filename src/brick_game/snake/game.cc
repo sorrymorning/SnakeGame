@@ -17,7 +17,7 @@ Game::Game() : status_(Status::Initial),action_(UserAction_t::Start),snake_(5,5)
     game_info_t_.next = nullptr;
     game_info_t_.level = 1;
     game_info_t_.high_score = 0;
-    game_info_t_.pause = 0;
+    game_info_t_.pause = Pause_Actions_t::ACTION_INITIAL;
     game_info_t_.speed = 100;
 
     pause = 0;
@@ -26,7 +26,7 @@ Game::Game() : status_(Status::Initial),action_(UserAction_t::Start),snake_(5,5)
 
 void Game::userInput(UserAction_t action, bool hold){
     if (status_ == Status::Initial){
-        startGame();
+        if(action==UserAction_t::Start)startGame();
     }else if (status_ == Status::Moving){
         actionSnake(action,hold);
     }else if (status_ == Status::Eating){
@@ -44,6 +44,7 @@ void Game::userInput(UserAction_t action, bool hold){
 void Game::startGame(){
     snake_ = Snake();
     status_ = Status::Moving;
+    game_info_t_.pause = Pause_Actions_t::ACTION_NO_PAUSE;
 }
 
 
@@ -99,7 +100,7 @@ void Game::handleSystemActions(UserAction_t action) {
 
 void Game::handleGameActions(UserAction_t action, bool hold) {
     // Движение по таймеру
-    if (timer_.isExpired()) {
+    if (timer_.isExpired() && status_!=Status::Initial) {
         moveSnake(action, hold);
         timer_.reset();
     }
@@ -132,6 +133,8 @@ void Game::moveSnake(UserAction_t action,bool hold){
 
     if(!snake_.checkCollision(nextHead)){
         snake_.move();
+    }else{
+        game_info_t_.pause = Pause_Actions_t::ACTION_END;
     }
 
 }
@@ -152,3 +155,5 @@ void Game::clearStateField(){
         }
     }
 }
+
+

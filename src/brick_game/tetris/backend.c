@@ -493,25 +493,3 @@ void userInput(UserAction_t action, bool hold) {
   }
 }
 
-UserAction_t updateUserAction(int ch) {
-  UserAction_t action = {-1};
-
-  if (ch == KEY_R) {
-    action = Start;
-  } else if (ch == KEY_P)
-    action = Pause;
-  else if (ch == KEY_Q)
-    action = Terminate;
-  else if (ch == KEY_LEFT)
-    action = Left;
-  else if (ch == KEY_RIGHT)
-    action = Right;
-  else if (ch == KEY_UP)
-    action = Up;
-  else if (ch == KEY_DOWN)
-    action = Down;
-  else if (ch == KEY_Z)
-    action = Action;
-
-  return action;
-}

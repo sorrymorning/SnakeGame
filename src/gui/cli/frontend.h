@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 #include <string.h>
-
+#include <ncurses.h>
 #include "../../brick_game/snake/api.h"
 // #include "../../brick_game/snake/game.h"
 
@@ -48,6 +48,6 @@
 
 #include "ncurses.h"
 
-void render(int status, int win, GameInfo_t gi);
+void render(GameInfo_t gi);
 
 #endif

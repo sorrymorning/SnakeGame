@@ -7,8 +7,6 @@
 #include "api.h"
 
 
-#define FIELD_H 20
-#define FIELD_W 10
 
 
 enum Direction { UP,  LEFT, DOWN, RIGHT };

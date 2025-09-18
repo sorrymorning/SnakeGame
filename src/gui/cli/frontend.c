@@ -141,7 +141,7 @@ WINDOW *print_game_field(GameInfo_t gi) {
 void print_next_figure(WINDOW *info_window, GameInfo_t gi) {
   mvwprintw(info_window, 2, 2, "Next");
 
-  for (int i = 0; i < SIZE_BLOCK; i++) {
+  for (int i = 0; i < SIZE_BLOCK && gi.next; i++) {
     for (int j = 0; j < SIZE_BLOCK; j++) {
       if (gi.next[i][j] == 1) {
         mvwprintw(info_window, i + 4, j * 3 + 4, "  #");
@@ -167,25 +167,25 @@ WINDOW *print_game_info(GameInfo_t gi) {
   return info_window;
 }
 
-void render(int status, int win, GameInfo_t gi) {
+void render(GameInfo_t gi) {
   refresh();
 
   WINDOW *controls_window = print_controls();
   wrefresh(controls_window);
 
   WINDOW *game_window = NULL;
-  if (!gi.pause) {
+  if (gi.pause != ACTION_PAUSE) {
     game_window = print_game_field(gi);
     wrefresh(game_window);
   }
 
-  if (status == Initial)
+  if (gi.pause == ACTION_INITIAL)
     print_start_menu();
-  else if (gi.pause)
+  else if (gi.pause == ACTION_PAUSE)
     print_pause_menu();
-  else if (win)
+  else if (gi.pause == ACTION_WIN)
     print_win(gi);
-  else if (status == Ending)
+  else if (gi.pause == ACTION_END)
     print_game_over(gi);
 
   WINDOW *info_window = print_game_info(gi);

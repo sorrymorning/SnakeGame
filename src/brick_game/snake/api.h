@@ -4,6 +4,16 @@
 #define FIELD_H 20
 #define FIELD_W 10
 
+#include <stdbool.h>
+
+typedef enum{
+  ACTION_NO_PAUSE,
+  ACTION_PAUSE,
+  ACTION_INITIAL,
+  ACTION_WIN,
+  ACTION_END
+} Pause_Actions_t;
+
 
 
 

@@ -5,7 +5,7 @@
 #include "api.h"
 #include "snake.h"
 #include "timer.h"
-
+#include <ncurses.h>
 
 
 class Game{

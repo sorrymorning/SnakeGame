@@ -50,7 +50,7 @@ bool Snake::checkCollision(const std::pair<int, int>& position) const {
     const auto& [x, y] = position;
     
     // Проверка границ поля
-    if (x < 0 || x >= FIELD_W || y < 0 || y >= FIELD_H) {
+    if (x < 0 || x >= FIELD_H || y < 0 || y >= FIELD_W) {
         return true;
     }
     

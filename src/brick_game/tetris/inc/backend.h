@@ -87,5 +87,5 @@ void speedBlock(bool hold);
 long long get_time();
 bool timer(State_t *gs, int delay);
 void userInput(UserAction_t action, bool hold);
-UserAction_t updateUserAction(int ch);
+
 #endif
