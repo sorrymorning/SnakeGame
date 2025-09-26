@@ -15,7 +15,7 @@ void Timer::reset() {
 }
 
 void Timer::update() {
-    reset(); // Алиас для reset
+    reset(); 
 }
 
 void Timer::setInterval(int interval_ms) {

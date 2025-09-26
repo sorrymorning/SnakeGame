@@ -21,15 +21,20 @@ public:
     bool checkCollision(const std::pair<int, int>& position) const;
     void changeDirection(UserAction_t action);
     std::pair<int, int> getNextHeadPosition() const;
+    std::pair<int, int> getHeadPosition() const;
     const std::vector<std::pair<int, int>>& getBody() const;
     Direction getDirection() const;
     bool isAlive() const;
     Direction actionToDirection(UserAction_t action);
+    void resetDirectionChanged();
+    void markDirectionChanged();
+    bool isDirectionChanged() const;
 
 private:
     std::vector<std::pair<int, int>> body;
     Direction currentDir;
     bool alive;
+    bool directionChanged_;
 };
 
 #endif

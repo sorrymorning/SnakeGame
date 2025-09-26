@@ -39,7 +39,9 @@ std::pair<int, int> Snake::getNextHeadPosition() const {
     return nextHead;
 }
 
-
+std::pair<int, int> Snake::getHeadPosition() const{
+    return body.front();
+}
 
 void Snake::grow() {
     body.push_back(body.back());
@@ -100,3 +102,15 @@ Direction Snake::actionToDirection(UserAction_t action){
     return dir;
 }
 
+
+void Snake::resetDirectionChanged() {
+    directionChanged_ = false;
+}
+
+void Snake::markDirectionChanged() {
+    directionChanged_ = true;
+}
+
+bool Snake::isDirectionChanged() const {
+    return directionChanged_;
+}

@@ -16,7 +16,6 @@ typedef enum{
 
 
 
-
 typedef enum {
   Start,     
   Pause,     
@@ -41,9 +40,9 @@ typedef struct {
 
 typedef enum {
     Initial,
-    // Appearance,
+    Appearance,
     Moving,
-    Eating,
+    // Eating
     Pausing,
     Ending,
     Exit

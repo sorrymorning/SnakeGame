@@ -8,8 +8,8 @@ CPP_SOURCES = brick_game/snake/backend.cc \
 			  brick_game/snake/game.cc \
 			  brick_game/snake/singleton.cc \
 			  brick_game/snake/snake.cc \
-			  brick_game/snake/timer.cc 
-
+			  brick_game/snake/timer.cc \
+			  brick_game/snake/apple.cc
 
 
 LDFLAGS = -lncurses
@@ -22,7 +22,7 @@ CPP_OBJECTS = $(CPP_SOURCES:.cc=.o)
 all: $(TARGET)
 
 $(TARGET): $(CPP_OBJECTS) $(C_OBJECTS) 
-	$(CXX) $^ -o $@ $(LDFLAGS)  # Добавляем здесь
+	$(CXX) $^ -o $@ $(LDFLAGS)  
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
