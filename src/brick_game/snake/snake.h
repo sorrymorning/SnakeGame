@@ -16,8 +16,7 @@ class Snake {
 public:
     Snake(int startX = 5, int startY = 5, int initialLength = 4);
     
-    void move();
-    void grow();
+    void move(bool willEatApple);
     bool checkCollision(const std::pair<int, int>& position) const;
     void changeDirection(UserAction_t action);
     std::pair<int, int> getNextHeadPosition() const;

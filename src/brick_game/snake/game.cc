@@ -37,12 +37,13 @@ void Game::userInput(UserAction_t action, bool hold){
     }
 }
 
-void Game::increaseScore(){
-    snake_.grow(); // Растем сначала
-    apple_.generateNewPosition();
-    game_info_t_.score++;
-    if(game_info_t_.score%5==0 && game_info_t_.level <= 10){
-        game_info_t_.level++;
+void Game::increaseScore(bool eat){
+    if(eat){
+        apple_.generateNewPosition();
+        game_info_t_.score++;
+        if(game_info_t_.score%5==0 && game_info_t_.level <= 10){
+            game_info_t_.level++;
+        }
     }
 }
 
@@ -124,10 +125,8 @@ void Game::moveSnake(UserAction_t action,bool hold){
     if(!snake_.checkCollision(nextHead)){
         bool willEatApple = (nextHead == apple_.getPosition());
         
-        snake_.move();
-        if(willEatApple){
-            increaseScore();
-        }
+        snake_.move(willEatApple);
+        increaseScore(willEatApple);
     }else{
         game_info_t_.pause = Pause_Actions_t::ACTION_END;
         status_ = Status::Ending;

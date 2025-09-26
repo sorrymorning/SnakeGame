@@ -12,7 +12,7 @@ Snake::Snake(int startX, int startY, int initialLength) {
 
 
 
-void Snake::move() {
+void Snake::move(bool willEatApple) {
     if (!alive) return;
     
     auto head = body.front();
@@ -23,7 +23,9 @@ void Snake::move() {
         case RIGHT: head.second += 1;  break;
     }
     body.insert(body.begin(), head);
-    body.pop_back();
+    if(!willEatApple){
+        body.pop_back();
+    }
 }
 
 std::pair<int, int> Snake::getNextHeadPosition() const {
@@ -43,9 +45,6 @@ std::pair<int, int> Snake::getHeadPosition() const{
     return body.front();
 }
 
-void Snake::grow() {
-    body.push_back(body.back());
-}
 
 
 bool Snake::checkCollision(const std::pair<int, int>& position) const {

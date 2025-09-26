@@ -32,7 +32,7 @@ class Game{
         void moveSnake(UserAction_t action,bool hold);
         GameInfo_t updateCurrentState();
         void startGame();
-        void increaseScore();
+        void increaseScore(bool eat);
 
 };
 
