@@ -44,8 +44,7 @@ typedef enum {
     Moving,
     // Eating
     Pausing,
-    Ending,
-    Exit
+    Ending
 } Status;
 
 #ifdef __cplusplus

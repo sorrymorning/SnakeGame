@@ -1,7 +1,7 @@
 #include "game.h"
+#include <map>
 
-
-Game::Game() : status_(Status::Initial),action_(UserAction_t::Start),snake_(5,5),timer_(),apple_(){
+Game::Game() : status_(Status::Initial),action_(UserAction_t::Start),snake_(5,5),timer_(),apple_(snake_.getBody()){
     game_info_t_.field = new int*[FIELD_H];
 
     for(int i = 0;i<FIELD_H;++i){
@@ -18,7 +18,7 @@ Game::Game() : status_(Status::Initial),action_(UserAction_t::Start),snake_(5,5)
     game_info_t_.level = 1;
     game_info_t_.high_score = 0;
     game_info_t_.pause = Pause_Actions_t::ACTION_INITIAL;
-    game_info_t_.speed = 100;
+    game_info_t_.speed = 0;
     game_info_t_.score = 0;
 
     
@@ -32,18 +32,34 @@ void Game::userInput(UserAction_t action, bool hold){
         actionSnake(action,hold);
     }else if (status_ == Status::Ending){
 
-    }else if (status_ == Status::Exit){
-        
     }
 }
 
 void Game::increaseScore(bool eat){
     if(eat){
-        apple_.generateNewPosition();
+        apple_.generateNewPosition(snake_.getBody());
         game_info_t_.score++;
         if(game_info_t_.score%5==0 && game_info_t_.level <= 10){
             game_info_t_.level++;
+            increaseSpeed();
         }
+        if(game_info_t_.score == 200){
+            status_=Status::Ending;
+            game_info_t_.pause = ACTION_WIN;
+        }
+    }
+}
+
+void Game::increaseSpeed() {
+    std::map<int, int> level_speeds = {
+        {1, 1000}, {2, 925}, {3, 850}, {4, 775}, {5, 700},
+        {6, 625}, {7, 550}, {8, 475}, {9, 400}, {10, 325}
+    };
+    
+    
+    if (level_speeds.find(game_info_t_.level) != level_speeds.end()) {
+        timer_.setInterval(level_speeds[game_info_t_.level]);
+        game_info_t_.speed = 1000 - level_speeds[game_info_t_.level];
     }
 }
 
@@ -87,6 +103,16 @@ void Game::handleSystemActions(UserAction_t action) {
     }
 }
 
+void Game::speedUp(){
+    if(!timer_.getSpeedUp()){
+        timer_.setInterval(300);
+    }else{
+        timer_.returnInterval();
+    }
+    timer_.toggleSpeedUp();
+}
+
+
 void Game::handleGameActions(UserAction_t action, bool hold) {
     // Движение по таймеру
     if (timer_.isExpired() && status_!=Status::Initial) {
@@ -101,10 +127,10 @@ void Game::handleGameActions(UserAction_t action, bool hold) {
         snake_.markDirectionChanged();
     }
     
-    // // Дополнительные действия
-    // if (action == UserAction_t::SpeedUp && !hold) {
-    //     increaseSpeed();
-    // }
+    // Дополнительные действия
+    if (action == UserAction_t::Action && !hold) {
+        speedUp();
+    }
 }
 
 bool Game::isDirectionAction(UserAction_t action) const {

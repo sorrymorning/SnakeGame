@@ -17,15 +17,19 @@ public:
     int getInterval() const;
     int getElapsed() const;
     int getTimeLeft() const;
+    bool getSpeedUp() const;
 
-
+    void toggleSpeedUp();
+    void returnInterval();
     void pause();
     void resume();
     
 private:
     std::chrono::steady_clock::time_point start_time_;
+    int past_interval_ms_;
     int interval_ms_;
     bool paused_ = false;
+    bool speedUp_ = false;
     std::chrono::steady_clock::time_point pause_time_;
 };
 

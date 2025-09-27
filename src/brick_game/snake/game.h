@@ -33,6 +33,8 @@ class Game{
         GameInfo_t updateCurrentState();
         void startGame();
         void increaseScore(bool eat);
+        void increaseSpeed();
+        void speedUp();
 
 };
 

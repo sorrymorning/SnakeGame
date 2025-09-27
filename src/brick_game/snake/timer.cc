@@ -1,7 +1,7 @@
 #include "timer.h"
 
 Timer::Timer(int interval_ms) 
-    : interval_ms_(interval_ms),
+    : past_interval_ms_(interval_ms),interval_ms_(interval_ms),
       start_time_(std::chrono::steady_clock::now()) {}
 
 bool Timer::isExpired() {
@@ -19,8 +19,13 @@ void Timer::update() {
 }
 
 void Timer::setInterval(int interval_ms) {
-    interval_ms_ = interval_ms;
-}
+        if (interval_ms != interval_ms_) {
+            past_interval_ms_ = interval_ms_; // Сохраняем текущий интервал
+            interval_ms_ = interval_ms;
+            reset();
+        }
+    }
+
 
 int Timer::getInterval() const {
     return interval_ms_;
@@ -37,16 +42,34 @@ int Timer::getTimeLeft() const {
 }
 
 void Timer::pause() {
-        if (!paused_) {
-            pause_time_ = std::chrono::steady_clock::now();
-            paused_ = true;
-        }
+    if (!paused_) {
+        pause_time_ = std::chrono::steady_clock::now();
+        paused_ = true;
     }
+}
     
 void Timer::resume() {
     if (paused_) {
         auto pause_duration = std::chrono::steady_clock::now() - pause_time_;
         start_time_ += pause_duration;
         paused_ = false;
+    }
+}
+
+bool Timer::getSpeedUp() const {
+    return speedUp_;
+}
+
+
+// Переключить состояние ускорения (true/false)
+void Timer::toggleSpeedUp() {
+    speedUp_ = !speedUp_;
+}
+
+void Timer::returnInterval() {
+    if (past_interval_ms_ > 0) {
+        interval_ms_ = past_interval_ms_;
+        past_interval_ms_ = 0; // Сбросить предыдущий интервал
+        reset();
     }
 }
