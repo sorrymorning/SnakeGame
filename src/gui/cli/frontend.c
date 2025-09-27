@@ -184,7 +184,7 @@ void render(GameInfo_t gi) {
   else if (gi.pause == ACTION_PAUSE)
     print_pause_menu();
   else if (gi.pause == ACTION_WIN)
-    print_win(gi);
+    print_win();
   else if (gi.pause == ACTION_END)
     print_game_over(gi);
 
