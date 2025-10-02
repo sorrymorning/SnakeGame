@@ -1,7 +1,7 @@
 #include "timer.h"
 
 Timer::Timer(int interval_ms) 
-    : past_interval_ms_(interval_ms),interval_ms_(interval_ms),
+    : base_interval_ms_(interval_ms), interval_ms_(interval_ms),
       start_time_(std::chrono::steady_clock::now()) {}
 
 bool Timer::isExpired() {
@@ -61,15 +61,34 @@ bool Timer::getSpeedUp() const {
 }
 
 
-// Переключить состояние ускорения (true/false)
+int Timer::getBaseInterval() const {
+    return base_interval_ms_;
+}
+
 void Timer::toggleSpeedUp() {
     speedUp_ = !speedUp_;
+    if (speedUp_) {
+        // Speed up - make the interval twice as fast
+        interval_ms_ = base_interval_ms_ / 2;
+    } else {
+        // Return to normal speed
+        interval_ms_ = base_interval_ms_;
+    }
 }
 
 void Timer::returnInterval() {
-    if (past_interval_ms_ > 0) {
-        interval_ms_ = past_interval_ms_;
-        past_interval_ms_ = 0; // Сбросить предыдущий интервал
-        reset();
+    interval_ms_ = base_interval_ms_;
+    speedUp_ = false;
+}
+
+
+void Timer::setBaseInterval(int interval_ms) {
+    base_interval_ms_ = interval_ms;
+    // If not in speed up mode, update current interval
+    if (!speedUp_) {
+        interval_ms_ = base_interval_ms_;
+    } else {
+        // If in speed up mode, maintain the speed up ratio
+        interval_ms_ = base_interval_ms_ / 2;
     }
 }

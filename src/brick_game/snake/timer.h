@@ -18,6 +18,9 @@ public:
     int getElapsed() const;
     int getTimeLeft() const;
     bool getSpeedUp() const;
+    void setBaseInterval(int interval_ms);
+    int getBaseInterval() const;
+
 
     void toggleSpeedUp();
     void returnInterval();
@@ -26,6 +29,7 @@ public:
     
 private:
     std::chrono::steady_clock::time_point start_time_;
+    int base_interval_ms_;
     int past_interval_ms_;
     int interval_ms_;
     bool paused_ = false;

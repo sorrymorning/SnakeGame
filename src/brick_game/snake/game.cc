@@ -50,19 +50,6 @@ void Game::increaseScore(bool eat){
     }
 }
 
-void Game::increaseSpeed() {
-    std::map<int, int> level_speeds = {
-        {1, 1000}, {2, 925}, {3, 850}, {4, 775}, {5, 700},
-        {6, 625}, {7, 550}, {8, 475}, {9, 400}, {10, 325}
-    };
-    
-    
-    if (level_speeds.find(game_info_t_.level) != level_speeds.end()) {
-        timer_.setInterval(level_speeds[game_info_t_.level]);
-        game_info_t_.speed = 1000 - level_speeds[game_info_t_.level];
-    }
-}
-
 
 void Game::startGame(){
     snake_ = Snake();
@@ -103,12 +90,20 @@ void Game::handleSystemActions(UserAction_t action) {
     }
 }
 
-void Game::speedUp(){
-    if(!timer_.getSpeedUp()){
-        timer_.setInterval(300);
-    }else{
-        timer_.returnInterval();
+void Game::increaseSpeed() {
+    std::map<int, int> level_speeds = {
+        {1, 1000}, {2, 925}, {3, 850}, {4, 775}, {5, 700},
+        {6, 625}, {7, 550}, {8, 475}, {9, 400}, {10, 325}
+    };
+    
+    if (level_speeds.find(game_info_t_.level) != level_speeds.end()) {
+        // Set the base interval for the current level
+        timer_.setBaseInterval(level_speeds[game_info_t_.level]);
+        game_info_t_.speed = 1000 - level_speeds[game_info_t_.level];
     }
+}
+
+void Game::speedUp() {
     timer_.toggleSpeedUp();
 }
 
