@@ -11,7 +11,8 @@ typedef enum{
   ACTION_PAUSE,
   ACTION_INITIAL,
   ACTION_WIN,
-  ACTION_END
+  ACTION_END,
+  ACTION_EXIT
 } Pause_Actions_t;
 
 

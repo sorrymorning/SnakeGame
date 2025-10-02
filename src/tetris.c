@@ -41,9 +41,9 @@ void game_loop() {
     timeout(10);
     userInput(updateUserAction(ch), false);
 
-    // if (state->status == Ending && ch == KEY_Q) {
-    //   is_playing = 0;
-    // }
+    if (tetris.pause == ACTION_EXIT) {
+      is_playing = 0;
+    }
     // freeMatrix(tetris.field);
   }
 }

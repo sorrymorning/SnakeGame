@@ -16,7 +16,7 @@ Game::Game() : status_(Status::Initial),action_(UserAction_t::Start),snake_(5,5)
 
     game_info_t_.next = nullptr;
     game_info_t_.level = 1;
-    game_info_t_.high_score = 0;
+    game_info_t_.high_score = readIntFromFile();
     game_info_t_.pause = Pause_Actions_t::ACTION_INITIAL;
     game_info_t_.speed = 0;
     game_info_t_.score = 0;
@@ -28,10 +28,12 @@ Game::Game() : status_(Status::Initial),action_(UserAction_t::Start),snake_(5,5)
 void Game::userInput(UserAction_t action, bool hold){
     if (status_ == Status::Initial){
         if(action==UserAction_t::Start)startGame();
+        else if (action==UserAction_t::Terminate) finishGame();
     }else if (status_ == Status::Moving){
         actionSnake(action,hold);
     }else if (status_ == Status::Ending){
-
+        if(action==UserAction_t::Start)startGame();
+        else if (action==UserAction_t::Terminate) finishGame();
     }
 }
 
@@ -52,12 +54,53 @@ void Game::increaseScore(bool eat){
 
 
 void Game::startGame(){
-    snake_ = Snake();
-    status_ = Status::Moving;
-    game_info_t_.pause = Pause_Actions_t::ACTION_NO_PAUSE;
+    if(status_== Status::Initial){
+        snake_ = Snake();
+        
+        status_ = Status::Moving;
+        game_info_t_.pause = Pause_Actions_t::ACTION_NO_PAUSE;
+    } else if(status_== Status::Ending){
+        if(game_info_t_.score > game_info_t_.high_score){
+             game_info_t_.high_score = game_info_t_.score;
+            writeIntToFile(game_info_t_.score);
+        }
+        game_info_t_.score = 0;
+        game_info_t_.level = 1;
+        timer_.reset();
+        snake_ = Snake();
+        
+        status_ = Status::Moving;
+        game_info_t_.pause = Pause_Actions_t::ACTION_NO_PAUSE;
+    }
     
 }
 
+void Game::finishGame(){
+    
+    if(game_info_t_.score > game_info_t_.high_score){
+        writeIntToFile(game_info_t_.score);
+    }
+    status_ = Status::Ending;
+    game_info_t_.pause = ACTION_EXIT;
+}
+
+void Game::writeIntToFile(int value) {
+    std::ofstream out("score.txt", std::ios::trunc); // откроет файл или создаст новый
+    if (!out) {
+        return;
+    }
+    out << value;
+}
+
+int Game::readIntFromFile() {
+    std::ifstream in("score.txt");
+    if (!in) {
+        return 0;
+    }
+    int value = 0;
+    in >> value;
+    return value;
+}
 
 
 

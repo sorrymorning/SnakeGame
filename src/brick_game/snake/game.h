@@ -7,7 +7,7 @@
 #include "timer.h"
 #include "apple.h"
 #include <ncurses.h>
-
+#include <fstream>
 
 class Game{
 
@@ -32,10 +32,12 @@ class Game{
         void moveSnake(UserAction_t action,bool hold);
         GameInfo_t updateCurrentState();
         void startGame();
+        void finishGame();
         void increaseScore(bool eat);
         void increaseSpeed();
         void speedUp();
-
+        void writeIntToFile(int value);
+        int readIntFromFile();
 };
 
 

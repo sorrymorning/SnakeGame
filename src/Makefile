@@ -31,4 +31,4 @@ $(TARGET): $(CPP_OBJECTS) $(C_OBJECTS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o $(TARGET) gui/cli/*.o brick_game/snake/*.o
+	rm -f *.o $(TARGET) gui/cli/*.o brick_game/snake/*.o score.txt

@@ -187,7 +187,7 @@ void render(GameInfo_t gi) {
     print_win();
   else if (gi.pause == ACTION_END)
     print_game_over(gi);
-
+  
   WINDOW *info_window = print_game_info(gi);
   wrefresh(info_window);
 
