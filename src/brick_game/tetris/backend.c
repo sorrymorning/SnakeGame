@@ -466,7 +466,12 @@ void userInput(UserAction_t action, bool hold) {
   } else if (state->status == Attachment) {
     attachBlock();
   } else if (state->status == Ending) {
-    finishGame();
+    if (action == Terminate) {
+      finishGame();
+      state->status = Ending;
+    } else if (action == Start) {
+      startGame();
+    }
   }
 }
 
