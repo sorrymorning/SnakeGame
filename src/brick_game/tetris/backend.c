@@ -2,6 +2,13 @@
 
 State_t *getCurrentState() {
   static State_t state;
+  static int initialized = 0;
+
+  if (!initialized) {
+    initialized = 1;
+    initializeState(&state);
+  }
+
   return &state;
 }
 
@@ -93,8 +100,8 @@ void fillBlock(int **block, int blockType) {
 
 int **generateBlock() {
   int blockType = rand() % 7;
-  int **block;
-  int **temp;
+  int **block = NULL;
+  int **temp = NULL;
 
   createMatrix(&block, SIZE_BLOCK, SIZE_BLOCK);
   createMatrix(&temp, SIZE_BLOCK, SIZE_BLOCK);
@@ -108,8 +115,7 @@ int **generateBlock() {
   return block;
 }
 
-void initializeState() {
-  State_t *state_t = getCurrentState();
+void initializeState(State_t *state_t) {
   state_t->status = Initial;
   int **field;
   int status = createMatrix(&field, FIELD_HEIGHT, FIELD_WIDTH);
@@ -245,7 +251,7 @@ int canRotateBlock(int **newBlock) {
 void rotateBlocks() {
   State_t *state = getCurrentState();
 
-  int **newBlock;
+  int **newBlock = NULL;
   createMatrix(&newBlock, SIZE_BLOCK, SIZE_BLOCK);
   rotateBlock(newBlock, state->block);
 
@@ -326,13 +332,15 @@ void updateLevel() {
 
 int getMaxScore() {
   FILE *file;
-  int highScore;
+  int highScore = 0;
+  
   file = fopen("score.txt", "r");
-  if (file) {
-    fscanf(file, "%d", &highScore);
+  if (file != NULL) {
+    int result = fscanf(file, "%d", &highScore);
+    if (result != 1) {
+      highScore = 0;  // Сброс если прочитано не 1 значение
+    }
     fclose(file);
-  } else {
-    highScore = 0;
   }
   return highScore;
 }
@@ -418,38 +426,7 @@ void finishGame() {
   freeMatrix(state->field);
 }
 
-GameInfo_t updateCurrentState() {
-  State_t *state = getCurrentState();
-  GameInfo_t tetris = {0};
-  int **displayField;
-  createMatrix(&displayField, FIELD_HEIGHT, FIELD_WIDTH);
-  for (int i = 0; i < FIELD_HEIGHT; i++) {
-    for (int j = 0; j < FIELD_WIDTH; j++) {
-      displayField[i][j] = state->field[i][j];
-    }
-  }
-  for (int i = 0; i < SIZE_BLOCK; i++) {
-    for (int j = 0; j < SIZE_BLOCK; j++) {
-      if (state->block[i][j]) {
-        int x = state->coordX + i;
-        int y = state->coordY + j;
-        if (x >= 0 && x < FIELD_HEIGHT && y >= 0 && y < FIELD_WIDTH) {
-          displayField[x][y] = 2;
-        }
-      }
-    }
-  }
 
-  tetris.field = displayField;
-  tetris.next = state->nextBlock;
-  tetris.score = state->score;
-  tetris.high_score = getMaxScore();
-  tetris.level = state->level;
-  tetris.speed = 1000;
-  tetris.pause = state->pause;
-
-  return tetris;
-}
 
 long long get_time() {
   struct timeval t;
@@ -493,3 +470,53 @@ void userInput(UserAction_t action, bool hold) {
   }
 }
 
+int set_pause_state(State_t *state_t){
+  int state = ACTION_NO_PAUSE;
+
+  if(state_t->status == Initial){
+    state = ACTION_INITIAL;
+  }else if(state_t->status == Ending){
+    state = ACTION_END;
+  }else if(state_t->pause == 1){
+    state = ACTION_PAUSE;
+  }
+  else if(state_t->is_win == 1){
+    state = ACTION_WIN;
+  }
+  return state;
+}
+
+
+GameInfo_t updateCurrentState() {
+  State_t *state = getCurrentState();
+  GameInfo_t tetris = {0};
+  int **displayField = NULL;
+  createMatrix(&displayField, FIELD_HEIGHT, FIELD_WIDTH);
+  for (int i = 0; i < FIELD_HEIGHT; i++) {
+    for (int j = 0; j < FIELD_WIDTH; j++) {
+      displayField[i][j] = state->field[i][j];
+    }
+  }
+  for (int i = 0; i < SIZE_BLOCK; i++) {
+    for (int j = 0; j < SIZE_BLOCK; j++) {
+      if (state->block[i][j]) {
+        int x = state->coordX + i;
+        int y = state->coordY + j;
+        if (x >= 0 && x < FIELD_HEIGHT && y >= 0 && y < FIELD_WIDTH) {
+          displayField[x][y] = 2;
+        }
+      }
+    }
+  }
+
+  tetris.field = displayField;
+  tetris.next = state->nextBlock;
+  tetris.score = state->score;
+  tetris.high_score = getMaxScore();
+  tetris.level = state->level;
+  tetris.speed = 1000;
+  tetris.pause = set_pause_state(state);
+
+  return tetris;
+
+}

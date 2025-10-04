@@ -1,4 +1,4 @@
-#include "brick_game/snake/api.h"
+#include "brick_game/tetris/inc/backend.h"
 #include "gui/cli/frontend.h"
 
 UserAction_t updateUserAction(int ch) {
@@ -26,25 +26,19 @@ UserAction_t updateUserAction(int ch) {
 
 void game_loop() {
   int is_playing = 1;
-  // initializeState();
   while (is_playing) {
-    // State_t *state = getCurrentState();
     GameInfo_t tetris = updateCurrentState();
     int ch = getch();
-    // render(state->status, state->is_win, tetris);
     render(tetris);
-    // if (state->status == Ending) {
-    //   while (ch != 'r' && ch != 'q') ch = getch();
-    //   // initializeState();
-    // }
-
     timeout(10);
     userInput(updateUserAction(ch), false);
 
     if (tetris.pause == ACTION_EXIT) {
       is_playing = 0;
     }
-    // freeMatrix(tetris.field);
+    if(tetris.field){
+      freeMatrix(tetris.field);
+    }
   }
 }
 
@@ -55,19 +49,3 @@ int main() {
 
   return 0;
 }
-
-
-
-
-
-
-// Initizialize переписать в части тетриса засунунть его в updateCurrentState
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 

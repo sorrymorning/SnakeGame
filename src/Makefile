@@ -11,18 +11,21 @@ CPP_SOURCES = brick_game/snake/backend.cc \
 			  brick_game/snake/timer.cc \
 			  brick_game/snake/apple.cc
 
+TET_SOURCES = brick_game/tetris/backend.c
 
-LDFLAGS = -lncurses
-
-TARGET = snake	
-
+LDFLAGS = -lncurses -lm
+	
 C_OBJECTS = $(C_SOURCES:.c=.o)
+TET_OBJECTS = $(TET_SOURCES:.c=.o)
 CPP_OBJECTS = $(CPP_SOURCES:.cc=.o)
 
-all: $(TARGET)
 
-$(TARGET): $(CPP_OBJECTS) $(C_OBJECTS) 
+snake: $(CPP_OBJECTS) $(C_OBJECTS) 
 	$(CXX) $^ -o $@ $(LDFLAGS)  
+
+tetris:$(TET_OBJECTS) $(C_OBJECTS)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -31,4 +34,4 @@ $(TARGET): $(CPP_OBJECTS) $(C_OBJECTS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o $(TARGET) gui/cli/*.o brick_game/snake/*.o score.txt
+	rm -f *.o snake tetris gui/cli/*.o brick_game/snake/*.o brick_game/tetris/*.o score.txt

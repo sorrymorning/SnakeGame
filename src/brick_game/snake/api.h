@@ -43,8 +43,8 @@ typedef enum {
     Initial,
     Appearance,
     Moving,
-    // Eating
-    Pausing,
+    Shifting,
+    Attachment,
     Ending
 } Status;
 
