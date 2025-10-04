@@ -1,4 +1,5 @@
 #include "brick_game/tetris/inc/backend.h"
+// #include "brick_game/snake/api.h"
 #include "gui/cli/frontend.h"
 
 UserAction_t updateUserAction(int ch) {
@@ -35,10 +36,9 @@ void game_loop() {
 
     if (tetris.pause == ACTION_EXIT) {
       is_playing = 0;
-    }
-    if(tetris.field){
       freeMatrix(tetris.field);
     }
+    
   }
 }
 

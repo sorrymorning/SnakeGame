@@ -4,7 +4,7 @@ State_t *getCurrentState() {
   static State_t state;
   static int initialized = 0;
 
-  if (!initialized) {
+  if (initialized == 0) {
     initialized = 1;
     initializeState(&state);
   }
@@ -421,9 +421,9 @@ void attachBlock() {
 void finishGame() {
   State_t *state = getCurrentState();
 
-  freeMatrix(state->block);
-  freeMatrix(state->nextBlock);
-  freeMatrix(state->field);
+  if(state->block)freeMatrix(state->block);
+  if(state->nextBlock)freeMatrix(state->nextBlock);
+  if(state->field)freeMatrix(state->field);
 }
 
 
@@ -452,7 +452,7 @@ void userInput(UserAction_t action, bool hold) {
   if (state->status == Initial) {
     if (action == Terminate) {
       finishGame();
-      state->status = Ending;
+      state->status = Exit;
     } else if (action == Start) {
       startGame();
     }
@@ -467,8 +467,8 @@ void userInput(UserAction_t action, bool hold) {
     attachBlock();
   } else if (state->status == Ending) {
     if (action == Terminate) {
-      finishGame();
-      state->status = Ending;
+      finishGame(); 
+      state->status = Exit;
     } else if (action == Start) {
       startGame();
     }
@@ -482,6 +482,8 @@ int set_pause_state(State_t *state_t){
     state = ACTION_INITIAL;
   }else if(state_t->status == Ending){
     state = ACTION_END;
+  }else if(state_t->status == Exit){
+    state = ACTION_EXIT;
   }else if(state_t->pause == 1){
     state = ACTION_PAUSE;
   }

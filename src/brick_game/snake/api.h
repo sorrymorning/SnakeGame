@@ -45,7 +45,8 @@ typedef enum {
     Moving,
     Shifting,
     Attachment,
-    Ending
+    Ending,
+    Exit
 } Status;
 
 #ifdef __cplusplus
