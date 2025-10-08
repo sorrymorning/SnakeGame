@@ -1,5 +1,11 @@
+
+
+#ifdef TETRIS
 #include "brick_game/tetris/inc/backend.h"
-// #include "brick_game/snake/api.h"
+#endif
+#ifdef SNAKE
+#include "brick_game/snake/api.h"
+#endif
 #include "gui/cli/frontend.h"
 
 UserAction_t updateUserAction(int ch) {
@@ -27,7 +33,7 @@ UserAction_t updateUserAction(int ch) {
 
 void game_loop() {
   int is_playing = 1;
-  while (is_playing) {
+  while (is_playing!=0) {
     GameInfo_t tetris = updateCurrentState();
     int ch = getch();
     render(tetris);
@@ -36,9 +42,11 @@ void game_loop() {
 
     if (tetris.pause == ACTION_EXIT) {
       is_playing = 0;
-      freeMatrix(tetris.field);
+      
     }
-    
+    #ifdef TETRIS
+      freeMatrix(tetris.field);
+    #endif
   }
 }
 

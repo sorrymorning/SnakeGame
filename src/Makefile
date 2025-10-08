@@ -20,10 +20,16 @@ TET_OBJECTS = $(TET_SOURCES:.c=.o)
 CPP_OBJECTS = $(CPP_SOURCES:.cc=.o)
 
 
-snake: $(CPP_OBJECTS) $(C_OBJECTS) 
-	$(CXX) $^ -o $@ $(LDFLAGS)  
+# Цель для змейки
+snake: CFLAGS += -DSNAKE
+snake: CXXFLAGS += -DSNAKE
+snake: $(CPP_OBJECTS) $(C_OBJECTS)
+	$(CXX) $^ -o $@ $(LDFLAGS)
 
-tetris:$(TET_OBJECTS) $(C_OBJECTS)
+# Цель для тетриса
+tetris: CFLAGS += -DTETRIS
+tetris: CXXFLAGS += -DTETRIS
+tetris: $(TET_OBJECTS) $(C_OBJECTS)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 

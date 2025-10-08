@@ -419,11 +419,25 @@ void attachBlock() {
 }
 
 void finishGame() {
+  // State_t *state = getCurrentState();
+
+  // if(state->block)freeMatrix(state->block);
+  // if(state->nextBlock)freeMatrix(state->nextBlock);
+  // if(state->field)freeMatrix(state->field);
   State_t *state = getCurrentState();
 
-  if(state->block)freeMatrix(state->block);
-  if(state->nextBlock)freeMatrix(state->nextBlock);
-  if(state->field)freeMatrix(state->field);
+    if (state->block) {
+        freeMatrix(state->block);
+        state->block = NULL;
+    }
+    if (state->nextBlock) {
+        freeMatrix(state->nextBlock);
+        state->nextBlock = NULL;
+    }
+    if (state->field) {
+        freeMatrix(state->field);
+        state->field = NULL;
+    }
 }
 
 
@@ -499,12 +513,12 @@ GameInfo_t updateCurrentState() {
   GameInfo_t tetris = {0};
   int **displayField = NULL;
   createMatrix(&displayField, FIELD_HEIGHT, FIELD_WIDTH);
-  for (int i = 0; i < FIELD_HEIGHT; i++) {
+  for (int i = 0; i < FIELD_HEIGHT && state->field; i++) {
     for (int j = 0; j < FIELD_WIDTH; j++) {
       displayField[i][j] = state->field[i][j];
     }
   }
-  for (int i = 0; i < SIZE_BLOCK; i++) {
+  for (int i = 0; i < SIZE_BLOCK && state->block; i++) {
     for (int j = 0; j < SIZE_BLOCK; j++) {
       if (state->block[i][j]) {
         int x = state->coordX + i;
