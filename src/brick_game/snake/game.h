@@ -38,6 +38,10 @@ class Game{
         void speedUp();
         void writeIntToFile(int value);
         int readIntFromFile();
+
+#ifdef SNAKE_TEST
+        friend class SnakeGameTest;  
+#endif  // SNAKE_TEST
 };
 
 
