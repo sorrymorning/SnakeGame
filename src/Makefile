@@ -13,24 +13,38 @@ CPP_SOURCES = brick_game/snake/backend.cc \
 
 TET_SOURCES = brick_game/tetris/backend.c
 
+TEST_SOURCES = tests/snake_tests/game_test.cc \
+				tests/snake_tests/test_for_apple.cc \
+				tests/snake_tests/test_main.cc
+
 LDFLAGS = -lncurses -lm
 	
 C_OBJECTS = $(C_SOURCES:.c=.o)
 TET_OBJECTS = $(TET_SOURCES:.c=.o)
 CPP_OBJECTS = $(CPP_SOURCES:.cc=.o)
 
+snake_lib.a: $(CPP_OBJECTS)
+	ar rcs $@ $(CPP_OBJECTS)
+
+
+test: CXXFLAGS += -DSNAKE_TEST
+test: LDFLAGS += -lgtest -lpthread
+test: $(TEST_SOURCES) snake_lib.a
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
+	./test
+
+
 
 # Цель для змейки
-snake: CFLAGS += -DSNAKE
-snake: CXXFLAGS += -DSNAKE
-snake: $(CPP_OBJECTS) $(C_OBJECTS)
-	$(CXX) $^ -o $@ $(LDFLAGS)
+snake: DEFINES = -DSNAKE
+tetris: DEFINES = -DTETRIS
 
-# Цель для тетриса
-tetris: CFLAGS += -DTETRIS
-tetris: CXXFLAGS += -DTETRIS
+snake: $(CPP_OBJECTS) $(C_OBJECTS)
+	$(CXX) $(CXXFLAGS) $(DEFINES) $^ -o $@ $(LDFLAGS)
+
 tetris: $(TET_OBJECTS) $(C_OBJECTS)
-	$(CC) $^ -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(DEFINES) $^ -o $@ $(LDFLAGS)
+
 
 
 %.o: %.c
@@ -40,4 +54,5 @@ tetris: $(TET_OBJECTS) $(C_OBJECTS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o snake tetris gui/cli/*.o brick_game/snake/*.o brick_game/tetris/*.o score.txt
+	rm -f *.o snake tetris snake_lib.a gui/cli/*.o brick_game/snake/*.o brick_game/tetris/*.o score.txt
+
