@@ -28,7 +28,9 @@ public:
     void resetDirectionChanged();
     void markDirectionChanged();
     bool isDirectionChanged() const;
-
+#ifdef SNAKE_TEST
+    friend class SnakeGameTest;  
+#endif  // SNAKE_TEST
 private:
     std::vector<std::pair<int, int>> body;
     Direction currentDir;
