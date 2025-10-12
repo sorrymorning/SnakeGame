@@ -2,6 +2,8 @@ CC = gcc
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17 -O2
 CFLAGS = -Wall -Wextra -O2
+GCOV_FLAGS = --coverage
+GCOV_FILE = gcov_test
 
 C_SOURCES = gui/cli/frontend.c tetris.c
 CPP_SOURCES = brick_game/snake/backend.cc \
@@ -15,6 +17,8 @@ TET_SOURCES = brick_game/tetris/backend.c
 
 TEST_SOURCES = tests/snake_tests/game_test.cc \
 				tests/snake_tests/test_for_apple.cc \
+				tests/snake_tests/test_for_snake.cc \
+				tests/snake_tests/test_for_game.cc \
 				tests/snake_tests/test_main.cc
 
 LDFLAGS = -lncurses -lm
@@ -45,6 +49,16 @@ snake: $(CPP_OBJECTS) $(C_OBJECTS)
 tetris: $(TET_OBJECTS) $(C_OBJECTS)
 	$(CC) $(CFLAGS) $(DEFINES) $^ -o $@ $(LDFLAGS)
 
+gcov_report: CXXFLAGS += -DSNAKE_TEST
+gcov_report: LDFLAGS += -lgtest -lpthread
+gcov_report: test
+	$(CXX) $(CXXFLAGS) $(CPP_SOURCES) $(TEST_SOURCES) $(LDFLAGS) $(GCOV_FLAGS) -o $(GCOV_FILE)
+	./$(GCOV_FILE)
+	lcov --capture --directory . --output-file coverage.info --no-external --ignore-errors mismatch
+	lcov --remove coverage.info '*/tests/*' '*/usr/*' -o filtered.info --ignore-errors unused
+	genhtml filtered.info --output-directory coverage_report
+
+
 
 
 %.o: %.c
@@ -54,5 +68,5 @@ tetris: $(TET_OBJECTS) $(C_OBJECTS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o snake tetris snake_lib.a gui/cli/*.o brick_game/snake/*.o brick_game/tetris/*.o score.txt
+	rm -rf *.o test snake tetris snake_lib.a gui/cli/*.o brick_game/snake/*.o brick_game/tetris/*.o score. txt *.info *.gcda *.gcno coverage_report/ $(GCOV_FILE) 
 
