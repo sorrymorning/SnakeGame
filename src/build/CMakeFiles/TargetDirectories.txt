@@ -1,0 +1,4 @@
+/Users/austinma/SnakeGame/src/build/CMakeFiles/SimpleQtApp.dir
+/Users/austinma/SnakeGame/src/build/CMakeFiles/edit_cache.dir
+/Users/austinma/SnakeGame/src/build/CMakeFiles/rebuild_cache.dir
+/Users/austinma/SnakeGame/src/build/CMakeFiles/SimpleQtApp_autogen.dir
