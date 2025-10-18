@@ -21,3 +21,66 @@ TEST(SnakeGameGameTest, Initialization){
     EXPECT_EQ(info.score,0);
 
 }
+
+
+TEST(SnakeGameGameTest, StartGame){
+    Game game;
+    SnakeGameTest tester;
+    tester.userInput(game,UserAction_t::Start,false);
+    GameInfo_t info = tester.getGameInfo(game);
+
+    EXPECT_EQ(info.pause,Pause_Actions_t::ACTION_NO_PAUSE);
+    EXPECT_EQ(tester.getGameStatus(game),Status::Moving);
+}
+
+TEST(SnakeGameGameTest, StartJustFinishGame){
+    Game game;
+    SnakeGameTest tester;
+    tester.userInput(game,UserAction_t::Terminate,false);
+    GameInfo_t info = tester.getGameInfo(game);
+
+    EXPECT_EQ(info.pause,Pause_Actions_t::ACTION_EXIT);
+    EXPECT_EQ(tester.getGameStatus(game),Status::Ending);
+}
+
+TEST(SnakeGameGameTest, PauseGame){
+    Game game;
+    SnakeGameTest tester;
+    tester.userInput(game,UserAction_t::Start,false);
+    tester.userInput(game,UserAction_t::Pause,false);
+    GameInfo_t info = tester.getGameInfo(game);
+
+    EXPECT_EQ(info.pause,Pause_Actions_t::ACTION_PAUSE);
+}
+
+TEST(SnakeGameGameTest, FinishStartGame){
+    Game game;
+    SnakeGameTest tester;
+    tester.setStatus(game,Status::Ending);
+    tester.userInput(game,UserAction_t::Start,false);
+    GameInfo_t info = tester.getGameInfo(game);
+
+    EXPECT_EQ(info.pause,Pause_Actions_t::ACTION_NO_PAUSE);
+    EXPECT_EQ(tester.getGameStatus(game),Status::Moving);
+}
+
+TEST(SnakeGameGameTest, FinistJustFinishGame){
+    Game game;
+    SnakeGameTest tester;
+    tester.setStatus(game,Status::Ending);
+    tester.userInput(game,UserAction_t::Terminate,false);
+    GameInfo_t info = tester.getGameInfo(game);
+
+    EXPECT_EQ(info.pause,Pause_Actions_t::ACTION_EXIT);
+    EXPECT_EQ(tester.getGameStatus(game),Status::Ending);
+}
+
+TEST(SnakeGameGameTest, IncreaseScore){
+    Game game;
+    SnakeGameTest tester;
+    std::pair<int, int> posBef = tester.getApplePosition(game);
+    tester.increaseScore(game);
+    std::pair<int, int> posAft = tester.getApplePosition(game);
+    EXPECT_NE(posBef,posAft);
+}
+

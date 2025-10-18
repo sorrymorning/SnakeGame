@@ -24,6 +24,11 @@ class SnakeGameTest{
 
 
         GameInfo_t getGameInfo(const Game& game);
+
+        void userInput(Game& game,UserAction_t action, bool hold);
+        Status getGameStatus(const Game& game);
+        void setStatus(Game& game, Status state);
+        void increaseScore(Game& game);
 };
 
 #endif

@@ -24,6 +24,7 @@ class Game{
     public:
 
         Game();
+        ~Game();
         void userInput(UserAction_t action, bool hold);
         void actionSnake(UserAction_t action, bool hold);
         void handleSystemActions(UserAction_t action);
@@ -38,6 +39,7 @@ class Game{
         void speedUp();
         void writeIntToFile(int value);
         int readIntFromFile();
+        Status getStatus() const;
 
 #ifdef SNAKE_TEST
         friend class SnakeGameTest;  

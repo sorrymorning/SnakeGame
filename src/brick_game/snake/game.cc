@@ -25,6 +25,16 @@ Game::Game() : status_(Status::Initial),action_(UserAction_t::Start),snake_(5,5)
 }   
 
 
+Game::~Game() {
+    if (game_info_t_.field != nullptr) {
+        for (int i = 0; i < FIELD_H; ++i) {
+            delete[] game_info_t_.field[i];
+        }
+        delete[] game_info_t_.field;
+        game_info_t_.field = nullptr; // Не обязательно, но хорошая практика
+    }
+}
+
 void Game::userInput(UserAction_t action, bool hold){
     if (status_ == Status::Initial){
         if(action==UserAction_t::Start)startGame();
@@ -118,7 +128,7 @@ void Game::actionSnake(UserAction_t action, bool hold) {
 void Game::handleSystemActions(UserAction_t action) {
     switch (action) {
         case UserAction_t::Terminate:
-            // завершение игры
+            finishGame();
             break;
         case UserAction_t::Pause:
             game_info_t_.pause = (game_info_t_.pause==ACTION_NO_PAUSE)? ACTION_PAUSE : ACTION_NO_PAUSE;
@@ -221,3 +231,7 @@ void Game::clearStateField(){
 }
 
 
+
+Status Game::getStatus() const{
+    return status_;
+}

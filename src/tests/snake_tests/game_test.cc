@@ -9,6 +9,7 @@ int SnakeGameTest::getGameScore(Game &game){
     return game.game_info_t_.score;
 }
 
+
 void SnakeGameTest::eatGame(Game &game) { game.increaseScore(true); }
 
 
@@ -49,3 +50,18 @@ GameInfo_t SnakeGameTest::getGameInfo(const Game& game){
   return game.game_info_t_;
 }
 
+void SnakeGameTest::userInput(Game& game,UserAction_t action, bool hold){
+    game.userInput(action,hold);
+}
+
+Status SnakeGameTest::getGameStatus(const Game& game){
+    return game.getStatus();
+}
+
+void SnakeGameTest::setStatus(Game& game, Status state){
+    game.status_ = state;
+}
+
+void SnakeGameTest::increaseScore(Game& game){
+    game.increaseScore(true);
+}
