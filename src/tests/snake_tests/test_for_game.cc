@@ -83,4 +83,12 @@ TEST(SnakeGameGameTest, IncreaseScore){
     std::pair<int, int> posAft = tester.getApplePosition(game);
     EXPECT_NE(posBef,posAft);
 }
+TEST(SnakeGameGameTest, IncreaseLevel){
+    Game game;
+    SnakeGameTest tester;
+    tester.setScore(game,4);
+    tester.increaseScore(game);
+    GameInfo_t info = tester.getGameInfo(game);
+    EXPECT_EQ(info.level,2);
+}
 

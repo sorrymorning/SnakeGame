@@ -65,3 +65,6 @@ void SnakeGameTest::setStatus(Game& game, Status state){
 void SnakeGameTest::increaseScore(Game& game){
     game.increaseScore(true);
 }
+void SnakeGameTest::setScore(Game& game,int score){
+    game.game_info_t_.score = score;
+}

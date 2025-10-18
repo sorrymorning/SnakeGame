@@ -29,6 +29,7 @@ class SnakeGameTest{
         Status getGameStatus(const Game& game);
         void setStatus(Game& game, Status state);
         void increaseScore(Game& game);
+        void setScore(Game& game,int score);
 };
 
 #endif
